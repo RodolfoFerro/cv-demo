@@ -1,4 +1,9 @@
+"""FastAPI web service."""
+
+import os
+
 from fastapi import FastAPI
+from fastapi import Response
 from PIL import Image
 import numpy as np
 import pytesseract
@@ -26,14 +31,31 @@ query_images, query_labels = load_query_images(
 
 @app.get("/")
 async def root():
+    """GET method to base endpoint."""
+
+    message = {"status": 200, "message": ["This API is up and running!"]}
+    return message
+
+
+@app.get("/health")
+async def health():
+    """GET method to status endpoint."""
+
     message = {"status": 200, "message": ["This API is up and running!"]}
     return message
 
 
 @app.post("/api/inference")
-async def inference(data: ImageData):
+async def inference(data: ImageData, response: Response):
+    """POST method to inference endpoint."""
+
     # Get data as JSON from POST
-    image_path = data.dict()["image"]
+    image_path = data.model_dump()["image"]
+
+    if not os.path.exists(image_path):
+        message = {"status": 404, "message": ["Image not found!"]}
+        response.status_code = 404
+        return message
 
     # Prepare image (OpenCV pipeline)
     image = prepare_image(image_path,
@@ -61,9 +83,16 @@ async def inference(data: ImageData):
 
 
 @app.post("/api/inference-ocr")
-async def inference_and_ocr(data: ImageData):
+async def inference_and_ocr(data: ImageData, response: Response):
+    """POST method to inference + OCR endpoint."""
+
     # Get data as JSON from POST
     image_path = data.model_dump()["image"]
+
+    if not os.path.exists(image_path):
+        message = {"status": 404, "message": ["Image not found!"]}
+        response.status_code = 404
+        return message
 
     # Prepare image (OpenCV pipeline)
     image = prepare_image(image_path,

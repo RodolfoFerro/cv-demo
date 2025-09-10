@@ -1,4 +1,4 @@
-"""API module."""
+"""Flask API module."""
 
 import base64
 
@@ -41,7 +41,7 @@ async def status():
 
 @app.route("/api/inference", methods=["POST"])
 async def inference():
-    """"""
+    """POST method to inference endpoint."""
 
     # Get data as JSON from POST
     data = request.get_json()
@@ -76,7 +76,7 @@ async def inference():
 
 @app.route("/api/encode", methods=["POST"])
 async def encode_image():
-    """"""
+    """POST method to encoding endpoint."""
 
     # Get data as JSON from POST
     data = request.get_json()
