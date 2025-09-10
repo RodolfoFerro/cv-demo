@@ -1,6 +1,6 @@
 # Image classification using One-Shot Learning Techniques
 
-This repository contains a technical demo for an **Image Classification** system of CAD figure and a ticket. 
+This repository contains a technical demo for an **Image Classification** system of CAD figures and tickets. 
 
 ![Overview](assets/samples.png)
 
